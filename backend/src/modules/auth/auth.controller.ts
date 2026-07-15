@@ -11,8 +11,8 @@ import { AppError } from "../../common/errors/AppError";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax" as const,
+  secure: true,
+  sameSite: "none" as const,
 };
 
 const ACCESS_TOKEN_MAX_AGE = 15 * 60 * 1000; // 15m
