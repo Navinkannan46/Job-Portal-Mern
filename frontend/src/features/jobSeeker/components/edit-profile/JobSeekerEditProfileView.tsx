@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import {
   useGetProfileQuery,
-  useUpdateProfileMutation,
+  useUpdateJobSeekerProfileMutation,
   useUploadResumeMutation,
   type Experience,
   type Education,
@@ -37,7 +37,7 @@ interface ProfileFormData {
 const JobSeekerEditProfileView = () => {
   const navigate = useNavigate();
   const { data: response, isLoading: isFetching } = useGetProfileQuery();
-  const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
+  const [updateProfile, { isLoading: isUpdating }] = useUpdateJobSeekerProfileMutation();
   const [uploadResume, { isLoading: isUploading }] = useUploadResumeMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 

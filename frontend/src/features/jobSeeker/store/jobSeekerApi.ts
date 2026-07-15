@@ -161,7 +161,7 @@ export const jobSeekerApi = apiSlice.injectEndpoints({
     }),
 
     // 📝 Update profile
-    updateProfile: builder.mutation<
+    updateJobSeekerProfile: builder.mutation<
       ApiResponse<UserProfile>,
       Partial<UserProfile>
     >({
@@ -210,7 +210,7 @@ export const {
   useGetJobsQuery,
   useGetJobQuery,
   useGetProfileQuery,
-  useUpdateProfileMutation,
+  useUpdateJobSeekerProfileMutation,
   useGetApplicationsQuery,
   useApplyForJobMutation,
   useUploadResumeMutation,

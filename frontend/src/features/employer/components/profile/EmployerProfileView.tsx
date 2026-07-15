@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import {
   useGetMyProfileQuery,
   useGetMyCompaniesQuery,
-  useUpdateProfileMutation,
+  useUpdateEmployerProfileMutation,
 } from "../../store/employerApi";
 import { toast } from "react-hot-toast";
 
@@ -32,7 +32,7 @@ const EmployerProfileView = () => {
     useGetMyProfileQuery();
   const { data: companiesRes, isLoading: isCompaniesLoading } =
     useGetMyCompaniesQuery();
-  const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
+  const [updateProfile, { isLoading: isUpdating }] = useUpdateEmployerProfileMutation();
 
   const profile = profileRes?.data;
   const companies = companiesRes?.data || [];

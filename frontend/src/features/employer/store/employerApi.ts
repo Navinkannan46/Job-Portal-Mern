@@ -129,7 +129,7 @@ export const employerApi = apiSlice.injectEndpoints({
       providesTags: ["profile" as any],
     }),
 
-    updateProfile: builder.mutation<ApiResponse<any>, Partial<any>>({
+    updateEmployerProfile: builder.mutation<ApiResponse<any>, Partial<any>>({
       query: (profileData) => ({
         url: "/employers/profile",
         method: "PATCH",
@@ -151,5 +151,5 @@ export const {
   useUpdateApplicantStatusMutation,
   useGetJobByIdQuery,
   useGetMyProfileQuery,
-  useUpdateProfileMutation,
+  useUpdateEmployerProfileMutation,
 } = employerApi;
