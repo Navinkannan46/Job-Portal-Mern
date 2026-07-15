@@ -31,13 +31,9 @@ export default function JobSeekerProfileView() {
   return (
     <div className="max-w-4xl mt-24 mx-auto space-y-6 p-6">
       <ProfileCard profile={profile} />
-
       <SkillsCard skills={profile.skills} />
-
       <ResumeCard resume={profile.resume} />
-
       <ExperienceCard experience={profile.experiences} />
-
       <EducationCard education={profile.educations} />
     </div>
   );

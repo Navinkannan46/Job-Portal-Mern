@@ -209,7 +209,7 @@ const JobSeekerEditProfileView = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
-            onClick={() => navigate("/job-seeker-profile")}
+            onClick={() => navigate("/profile")}
             className="p-2 hover:bg-muted rounded-full transition-colors"
           >
             <ArrowLeft className="w-6 h-6" />
@@ -650,7 +650,7 @@ const JobSeekerEditProfileView = () => {
 
       <div className="flex justify-end gap-4 py-4 border-t border-border mt-12">
         <button
-          onClick={() => navigate("/job-seeker-profile")}
+          onClick={() => navigate("/profile")}
           className="px-6 py-2.5 rounded-lg border border-border text-sm font-semibold hover:bg-muted transition-all"
         >
           Cancel
