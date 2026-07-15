@@ -1,0 +1,218 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  EMPLOYER
+  ADMIN
+}
+
+enum JobStatus {
+  OPEN
+  CLOSED
+  DRAFT
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+}
+
+enum ApplicationStatus {
+  APPLIED
+  SHORTLISTED
+  REVIEWING
+  HIRED
+  REJECTED
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+
+  role   Role       @default(USER)
+  phone  String?
+  isVerified Boolean @default(false)
+  status UserStatus @default(ACTIVE)
+  lastLogin DateTime?
+
+  profile      UserProfile?
+  employer     EmployerProfile?
+  applications Application[]
+  companies    Company[] @relation("CompanyCreator")
+  jobs         Job[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserProfile {
+  id     String @id @default(uuid())
+
+  userId String 
+  user   User   @relation(fields: [userId], references: [id])
+
+  skills         String[]
+  resume         String?
+  location       String?
+  expectedSalary Float?
+  bio            String?
+
+  experiences Experience[]
+  educations  Education[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Experience {
+  id String @id @default(uuid())
+
+  userProfileId String
+  userProfile   UserProfile @relation(fields: [userProfileId], references: [id])
+
+  company      String
+  position     String
+  startDate    DateTime
+  endDate      DateTime?
+  description  String?
+  isCurrentJob Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([userProfileId])
+}
+
+model Education {
+  id String @id @default(uuid())
+
+  userProfileId String
+  userProfile   UserProfile @relation(fields: [userProfileId], references: [id])
+
+  degree       String
+  institution  String
+  fieldOfStudy String?
+  startYear    Int
+  endYear      Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([userProfileId])
+}
+
+model Company {
+  id String @id @default(uuid())
+
+  name        String
+  description String?
+  website     String?
+  logo        String?
+  location    String?
+  industry    String?
+  companySize String?
+  foundedYear Int?
+  isVerified  Boolean @default(false)
+
+  createdById String
+  createdBy   User @relation("CompanyCreator", fields: [createdById], references: [id])
+
+  employers EmployerProfile[]
+  jobs      Job[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+model EmployerProfile {
+  id String @id @default(uuid())
+
+  userId String 
+  user   User   @relation(fields: [userId], references: [id])
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  designation String?
+  isPrimary   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
+  @@unique([userId, companyId])
+}
+
+model Job {
+  id String @id @default(uuid())
+
+  title       String
+  description String
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  postedById String
+  postedBy   User @relation(fields: [postedById], references: [id])
+
+  skillsRequired     String[]
+  location           String?
+  jobType            JobType
+  experienceRequired Int
+  educationRequired  String?
+  isRemote           Boolean @default(false)
+  salaryMin          Float?
+  salaryMax          Float?
+  status             JobStatus @default(OPEN)
+  expiresAt          DateTime?
+
+  applicantsCount Int @default(0)
+
+  applications Application[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([title])
+  @@index([location])
+}
+
+model Application {
+  id String @id @default(uuid())
+
+  jobId String
+  job   Job @relation(fields: [jobId], references: [id])
+
+  applicantId String
+  applicant   User @relation(fields: [applicantId], references: [id])
+
+  resume      String?
+  coverLetter String?
+
+  status ApplicationStatus @default(APPLIED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([jobId, applicantId])
+  @@index([jobId])
+  @@index([applicantId])
+}
